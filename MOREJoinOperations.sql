@@ -43,3 +43,34 @@ WHERE name='Rock Hudson'
 GROUP BY yr
 HAVING COUNT(title) > 2;
 
+--Pregunta 12
+
+SELECT title, name
+FROM movie
+JOIN casting ON (movieid=movie.id AND ord=1)
+JOIN actor ON (actorid=actor.id)
+WHERE movie.id IN (
+    SELECT movieid FROM casting
+    WHERE actorid IN(
+        SELECT id FROM actor
+        WHERE name='Julie Andrews'
+    )
+);
+--Pregunta 13
+SELECT a.name
+FROM actor a
+JOIN casting c ON a.id = c.actorid
+WHERE c.ord = 1
+GROUP BY a.name
+HAVING COUNT(c.movieid) >= 15
+ORDER BY a.name ASC;
+
+--Pregunta 14
+ SELECT m.title, COUNT(c.actorid) AS actor_count
+FROM movie m
+LEFT JOIN casting c ON m.id = c.movieid
+WHERE m.yr = 1978
+GROUP BY m.id, m.title
+ORDER BY actor_count DESC, m.title ASC;
+--Pregunta 15
+
